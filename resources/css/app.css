@@ -320,14 +320,14 @@ input {
     user-select: none;
 }
 
-/* .header-dropdown-menu {
+.header-dropdown-menu {
     display: none;
     position: absolute;
     top: 100%;
     right: 0;
-    min-width: 200px;
+    min-width: 220px;
     background: var(--fk-white);
-    border-radius: 0 0 var(--fk-radius) var(--fk-radius);
+    border-radius: 0 0 var(--fk-radius-md) var(--fk-radius-md);
     box-shadow: var(--fk-shadow-lg);
     z-index: 1001;
     padding: 8px 0;
@@ -337,7 +337,7 @@ input {
 
 .header-dropdown-menu.active {
     display: block;
-} */
+}
 
 @keyframes dropdownFadeIn {
     from {

@@ -18,18 +18,45 @@
                 @endfor
             </div>
             <div class="detail-buttons">
-                <a href="/cart" class="btn-add-cart">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020.01 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
-                    </svg>
-                    ADD TO CART
-                </a>
-                <a href="#" class="btn-buy-now">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/>
-                    </svg>
-                    BUY NOW
-                </a>
+                @auth
+                <form action="{{ route('cart.add', $product['id']) }}" method="POST" style="display:inline; width:100%;">
+                    @csrf
+                    <button type="submit" class="btn-add-cart" style="border:none; cursor:pointer; width:100%; display:flex; align-items:center; justify-content:center;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020.01 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+                        </svg>
+                        ADD TO CART
+                    </button>
+                </form>
+                <form action="{{ route('cart.add', $product['id']) }}" method="POST" style="display:inline; width:100%;">
+                    @csrf
+                    <button type="submit" class="btn-buy-now" style="border:none; cursor:pointer; width:100%; display:flex; align-items:center; justify-content:center;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/>
+                        </svg>
+                        BUY NOW
+                    </button>
+                </form>
+                @else
+                <form action="{{ route('cart.add', $product['id']) }}" method="POST" style="display:inline; width:100%;">
+                    @csrf
+                    <button type="submit" class="btn-add-cart" style="border:none; cursor:pointer; width:100%; display:flex; align-items:center; justify-content:center;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020.01 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+                        </svg>
+                        ADD TO CART
+                    </button>
+                </form>
+                <form action="{{ route('cart.add', $product['id']) }}" method="POST" style="display:inline; width:100%;">
+                    @csrf
+                    <button type="submit" class="btn-buy-now" style="border:none; cursor:pointer; width:100%; display:flex; align-items:center; justify-content:center;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/>
+                        </svg>
+                        BUY NOW
+                    </button>
+                </form>
+                @endauth
             </div>
         </div>
     </div>

@@ -86,7 +86,7 @@
             </form>
 
             <div class="seller-login-footer">
-                <p>Don't have a seller account? <a href="/seller">Register as a Seller</a></p>
+                <p>Don't have a seller account? <a href="{{ route('SellerRegisterPage') }}">Register as a Seller</a></p>
             </div>
         </div>
     </div>

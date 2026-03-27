@@ -28,12 +28,15 @@
                 </div>
                 <div class="cart-item-controls">
                     <div class="qty-controls">
-                        <button class="qty-btn" onclick="changeQty({{ $index }}, -1)">−</button>
-                        <input type="text" class="qty-value" value="{{ $item['qty'] }}" id="qty-{{ $index }}" readonly>
-                        <button class="qty-btn" onclick="changeQty({{ $index }}, 1)">+</button>
+                        <button class="qty-btn" onclick="changeQty({{ $item['id'] }}, -1)" {{ $item['qty'] <= 1 ? 'disabled' : '' }}>−</button>
+                        <input type="text" class="qty-value" value="{{ $item['qty'] }}" readonly>
+                        <button class="qty-btn" onclick="changeQty({{ $item['id'] }}, 1)">+</button>
                     </div>
                     <button class="cart-action-btn">Save for Later</button>
-                    <button class="cart-action-btn">Remove</button>
+                    <form action="{{ route('cart.remove', $item['id']) }}" method="POST" style="display:inline-block; margin:0; padding:0;">
+                        @csrf
+                        <button type="submit" class="cart-action-btn" style="border:none; cursor:pointer;">Remove</button>
+                    </form>
                 </div>
             </div>
             <div style="font-size:13px;color:var(--fk-text-primary);text-align:right;min-width:120px;">
@@ -79,4 +82,18 @@
         </div>
     </div>
 </div>
+
+<form id="qty-form" method="POST" style="display:none;">
+    @csrf
+    <input type="hidden" name="action" id="qty-action">
+</form>
+
+<script>
+function changeQty(id, change) {
+    const form = document.getElementById('qty-form');
+    form.action = '/cart/update/' + id;
+    document.getElementById('qty-action').value = change > 0 ? 'increase' : 'decrease';
+    form.submit();
+}
+</script>
 @endsection

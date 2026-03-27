@@ -22,6 +22,10 @@ class AuthController extends Controller
         return view('seller.login');
     }
 
+    public function sellerRegister(){
+        return view('seller.register');
+    }
+
     public function Nocart(){
         return view('nocart');
     }

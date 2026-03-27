@@ -21,10 +21,14 @@
             </span>
         </div>
 
+        @php
+            $cartCount = collect(session('cart', []))->sum('qty');
+        @endphp
+
         <div class="header-actions">
             @auth
             <div class="header-user-dropdown" id="userDropdown">
-                <a href="/profile" class="header-btn header-btn-login" id="userDropdownBtn">
+                <button type="button" class="header-btn header-btn-login" id="userDropdownBtn">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;">
                         <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                     </svg>
@@ -32,17 +36,20 @@
                     <svg class="header-dropdown-arrow" id="dropdownArrow" width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M7 10l5 5 5-5z"/>
                     </svg>
-                </a>
+                </button>
 
-                <div class="header-dropdown-menu" id="userDropdownMenu" >
-                    <div class="absolute top-full right-0 rounded-lg p-3 mt-1 shadow-md">
-                        <a href="/">
+                <div class="header-dropdown-menu" id="userDropdownMenu">
+                    <a href="/">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="#878787"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
                         Home
                     </a>
                     <a href="/profile">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="#878787"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                         My Profile
+                    </a>
+                    <a href="{{ route('Sellerlogin') }}">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#878787"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+                        Become a Seller
                     </a>
                     <a href="#">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="#878787"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"/></svg>
@@ -60,7 +67,6 @@
                             Logout
                         </button>
                     </form>
-                    </div>
                 </div>
             </div>
             @endauth
@@ -78,46 +84,66 @@
                 </svg>
                 More
             </a>
-            <a href="#" class="header-link" style="position:relative;">
+            @auth
+            <a href="/cart" class="header-link" style="position:relative;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                     <path
                         d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020.01 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" />
                 </svg>
                 Cart
-                <span class="header-cart-badge">3</span>
+                @if($cartCount > 0)
+                <span class="header-cart-badge">{{ $cartCount }}</span>
+                @endif
             </a>
+            @else
+            <a href="{{route('Nocart')}}" class="header-link" style="position:relative;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020.01 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" />
+                </svg>
+                Cart
+                @if($cartCount > 0)
+                <span class="header-cart-badge">{{ $cartCount }}</span>
+                @endif
+            </a>
+            @endauth
         </div>
     </div>
 </header>
 
-{{-- Dropdown Hover + Click Script --}}
+{{-- Dropdown Click Toggle Script --}}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const wrapper = document.getElementById('userDropdown');
+    const btn = document.getElementById('userDropdownBtn');
     const menu = document.getElementById('userDropdownMenu');
     const arrow = document.getElementById('dropdownArrow');
 
-    if (!wrapper || !menu) return;
+    if (!btn || !menu) return;
 
-    let closeTimer = null;
+    let isOpen = false;
 
-    function openDropdown() {
-        clearTimeout(closeTimer);
-        menu.style.display = 'block';
-        if (arrow) arrow.classList.add('rotated');
+    function toggleDropdown(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        isOpen = !isOpen;
+        menu.classList.toggle('active', isOpen);
+        if (arrow) arrow.classList.toggle('rotated', isOpen);
     }
 
     function closeDropdown() {
-        menu.style.display = 'none';
+        isOpen = false;
+        menu.classList.remove('active');
         if (arrow) arrow.classList.remove('rotated');
     }
 
-    // Open on hover
-    wrapper.addEventListener('mouseenter', openDropdown);
+    // Toggle on click
+    btn.addEventListener('click', toggleDropdown);
 
-    // Close on mouse leave (with small delay to prevent flicker)
-    wrapper.addEventListener('mouseleave', function () {
-        closeTimer = setTimeout(closeDropdown, 200);
+    // Close when clicking outside
+    document.addEventListener('click', function (e) {
+        if (!btn.contains(e.target) && !menu.contains(e.target)) {
+            closeDropdown();
+        }
     });
 
     // Close on Escape key
